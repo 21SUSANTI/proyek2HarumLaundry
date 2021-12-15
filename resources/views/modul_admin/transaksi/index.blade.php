@@ -1,17 +1,33 @@
 @extends('layouts.backend')
-@section('title','Admin - Data Transaksi')
+@section('title','Admin - Data transaksi')
 @section('content')
+@section('header','Data Transaksi')
+
+@if ($message = Session::get('success'))
+  <div class="alert alert-success alert-block">
+  <button type="button" class="close" data-dismiss="alert">×</button>
+    <strong>{{ $message }}</strong>
+  </div>
+@elseif($message = Session::get('error'))
+  <div class="alert alert-danger alert-block">
+  <button type="button" class="close" data-dismiss="alert">×</button>
+    <strong>{{ $message }}</strong>
+  </div>
+@endif
 <div class="row">
   <div class="col-lg-12">
       <div class="card">
           <div class="card-body">
-              <h4 class="card-title"> Data Transaksi
+
+              <h4 class="card-title"> Data transaksi
+                <a href="{{route('transaksi.create')}}" class="btn btn-primary">Tambah</a>
+            </h4>
                 <div class="row">
                       <div class="col-4">
                           <select name="user_id" id="user_id" class="form-control">
-                              <option value="all">--Semua Transaksi--</option>
+                              <option value="all">--Semua transaksi--</option>
                                   @foreach ($filter as $item)
-                                      <option value="{{$item->id}}">Karyawan {{$item->name}}</option>
+                                      <option value="{{$item->id}}">transaksi {{$item->name}}</option>
                                   @endforeach
                           </select>
                   </div>
@@ -25,7 +41,7 @@
                       <thead>
                           <tr>
                               <th>#</th>
-                              <th>TGL Transaksi</th>
+                              <th>TGL transaksi</th>
                               <th>Customer</th>
                               <th>Status Order</th>
                               <th>Status Pembayaran</th>
@@ -73,6 +89,14 @@
                           @endforeach
                       </tbody>
                   </table>
+                  <td>
+                              <form action="{{ route('transaksi.destroy',$item->id) }}" method="POST">
+                                  @csrf
+                                  @method('DELETE')
+                                  <a href="{{route('transaksi.edit', $item->id)}}" class="btn btn-sm btn-info">Edit</a>
+                                  <button type="submit" class="btn btn-danger btn-sm">Hapus</button>
+                              </form>
+                            </td>
               </div>
           </div>
       </div>
